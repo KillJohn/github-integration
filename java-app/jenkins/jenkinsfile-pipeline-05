@@ -2,12 +2,12 @@ pipeline {
   agent {
      node { 
         label 'node01'
-        options { 
-          timestamps () 
-          skipDefaultCheckout (true)
-          }
-     } 
+      }
   }
+  options { 
+    timestamps () 
+    skipDefaultCheckout (true)
+    }
   tools {
    maven 'maven-apache-3.8.4'
  }
