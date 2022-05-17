@@ -18,18 +18,21 @@ pipeline {
         }
       }
     }
+    stage('Build') {
+      steps {
+        sh 'touch `date`.txt'
+      }
+    }
+  }
+    stage('Validation') {
+      steps {
+        input('do you want to continue?')
+      }
+    }
     stage('Run') {
       steps {
         sh 'java -jar $MVN_WORKDIR/target/my-app-1.0-SNAPSHOT.jar'
       }
     }
-  }
-  post {
-    always {
-      dir('java-app'){
-        step($class: 'JUnitResultArchiver', checksName: '', testResults: '**/surefire-reports/TEST-*.xml')
-        step(followSymlinks: false, $class: 'ArtifactArchiver', artifacts: 'target/*.jar')
-      }
-    }
-  }
+  
 }
