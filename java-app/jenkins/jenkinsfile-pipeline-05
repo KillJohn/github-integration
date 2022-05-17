@@ -2,7 +2,10 @@ pipeline {
   agent {
      node { 
         label 'node01'
-        options { timestamps() }
+        options { 
+          timestamps() 
+          skipDefaultCheckout(true)
+          }
 
      } 
   }
@@ -19,23 +22,33 @@ stages {
      }
    }
  }
- stage('Run') {
+  stage('Build') {
    steps {
       cleanWs()
+      sh 'touch `date`.txt'
+   }
+   post{
+     success{
+       step(followSymlinks: false, $class: 'ArtifactArchiver', artifacts: '*.txt')
+     }
    }
  }
 }
-stage('build'){
-  steps {
-    sh 'touch `date`'
-  }
-}
-stage('validation') {
 
+stage('validation') {
+  steps {
+    input 'is it working properly'
+  }
 }
 stage('deploy') {
   steps {
     sh 'echo $JAVA'
+    sh 'node version'
+  }
+  post{
+    failure{
+      sh 'echo "error"'
+    }
   }
 }
 
