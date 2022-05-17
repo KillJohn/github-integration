@@ -3,13 +3,11 @@ pipeline {
      node { 
         label 'node01'
         options { 
-          timestamps() 
-          skipDefaultCheckout(true)
+          timestamps () 
+          skipDefaultCheckout (true)
           }
-
      } 
   }
-
   tools {
    maven 'maven-apache-3.8.4'
  }
@@ -33,23 +31,24 @@ stages {
      }
    }
  }
-}
 
-stage('validation') {
-  steps {
-    input 'is it working properly'
+
+  stage('validation') {
+    steps {
+      input 'is it working properly'
   }
 }
-stage('deploy') {
-  steps {
-    sh 'echo $JAVA'
-    sh 'node version'
+  stage('deploy') {
+    steps {
+      sh 'echo $JAVA'
+      sh 'node version'
   }
   post{
     failure{
       sh 'echo "error"'
+        }
+      }
     }
-  }
-}
 
+  }
 }
