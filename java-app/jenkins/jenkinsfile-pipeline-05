@@ -13,13 +13,6 @@ pipeline {
  }
  
 stages {
- stage('Maven Package') {
-   steps {
-     dir('java-app'){
-       sh 'mvn package'
-     }
-   }
- }
   stage('Build') {
    steps {
       cleanWs()
